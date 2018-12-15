@@ -29,7 +29,7 @@ idname = object.addonabbreviation_ot_something
 
 
 class AOSBS_OT_align_obj_side_by_side(bpy.types.Operator):
-	"""Tooltip"""
+	"""Aligns objects side by side by their bounding boxes"""
 	bl_idname = "object.aosbs_ot_align_obj_side_by_side"
 	bl_label = "Align Objects Side by Side"
 	"""
@@ -60,7 +60,7 @@ class AOSBS_OT_align_obj_side_by_side(bpy.types.Operator):
 		name="Align Axis",
 		description="Axis which the objects are aligned",
 		default="0"
-		)
+	)
 		
 	padding = FloatProperty(
 		name="Padding",
@@ -80,20 +80,20 @@ class AOSBS_OT_align_obj_side_by_side(bpy.types.Operator):
 		objects.sort(key=lambda obj:obj.location[axis])
 		# Set origins to center of their bounding boxes
 		bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='BOUNDS')
+		# Remove 1st object
+		obj  = objects.pop(0)
 		# Set Placer at 1st obj's position
-		placer = objects[0].location[axis]
+		placer = obj.location[axis]
 		# Add half of 1st obj's BB dimensions to Placer
-		placer += (objects[0].dimensions[axis] / 2)
-		# Remove 1st object, declare it "placed"
-		objects.pop(0)
+		placer += (obj.dimensions[axis] / 2)
 		# Add padding
 		placer += self.padding
 		# Repeat for rest
 		while(objects):
-			placer += (objects[0].dimensions[axis] / 2)
-			objects[0].location[axis] = placer
-			placer += (objects[0].dimensions[axis] / 2)
-			objects.pop(0)
+			obj = objects.pop(0)
+			placer += (obj.dimensions[axis] / 2)
+			obj.location[axis] = placer
+			placer += (obj.dimensions[axis] / 2)
 			placer += self.padding
 		
 		return {'FINISHED'}
