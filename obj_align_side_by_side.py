@@ -4,7 +4,7 @@ bl_info = {
 	"version": (0, 1),
 	"blender": (2, 79, 0),
 	"location": "View3D > Operator Search > Align Objects Side by Side",
-	"description": "Aligns objects side by side",
+	"description": "Aligns objects side by side by their bounding boxes",
 	"warning": "Changes objects origins",
 	"wiki_url": "",
 	"category": "Object"
